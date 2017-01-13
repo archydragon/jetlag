@@ -1,0 +1,7 @@
+conference: somechat@conference.jabber.ru
+conference_password: roompass # optional
+telegram_bot_token: 123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+telegram_chat_id: 123456789
+jabber_id: jetlagbotaccount@jabber.ru
+jabber_password: v3ry$3(ur3
+jabber_nickname: Jetlag Owner
