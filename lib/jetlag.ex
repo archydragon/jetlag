@@ -3,14 +3,13 @@ defmodule Jetlag do
   use Application
 
   def start(_type, _args) do
+    # fetch configuration from YAML source which name is passed as environment
+    # variable, see config.exs
     config_file = Application.fetch_env!(:jetlag, :config_file)
     config_path = File.cwd! |> Path.join(config_file)
     parsed_config = YamlElixir.read_from_file(config_path)
 
     Application.put_env(:jetlag, :config, parsed_config)
-
-    telegram_token = parsed_config["telegram_bot_token"]
-    Application.put_env(:nadia, :token, telegram_token)
 
     import Supervisor.Spec, warn: false
     sup_children = [
