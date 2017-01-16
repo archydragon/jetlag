@@ -11,7 +11,8 @@ defmodule Jetlag.Mixfile do
   end
 
   def application do
-    [applications: [:logger,
+    [mod: {Jetlag, []},
+     applications: [:logger,
                     :yaml_elixir,
                     :romeo,
                     :nadia
