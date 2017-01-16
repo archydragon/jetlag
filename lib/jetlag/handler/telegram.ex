@@ -28,7 +28,13 @@ defmodule Jetlag.Handler.Telegram do
 
   def handle_info(:fetch, state) do
     offset = state[:offset]
-    {:ok, updates} = Nadia.get_updates(limit: 5, offset: offset)
+    # Sometimes we are getting an exception here, thanks Telegram API
+    # 'Unexpected token at position 0: <'
+    try do
+      {:ok, updates} = Nadia.get_updates(limit: 5, offset: offset)
+    rescue Poison.SyntaxError ->
+      updates = []
+    end
     new_offset = process_updates(updates, offset)
     schedule()
     {:noreply, %{state | :offset => new_offset}}
