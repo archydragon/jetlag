@@ -47,7 +47,7 @@ With Docker:
 
     $ git clone https://github.com/Mendor/jetlag.git
     $ cd jetlag
-    $ sudo docker build -t jetlag:0.1.0 .
+    $ sudo docker build -t jetlag:0.1.1 .
 
 
 ## Running
@@ -58,7 +58,7 @@ Stand-alone:
 
 With Docker:
 
-    $ sudo docker run -de "JETLAG_CONFIG_FILE=jetlag-chatname.yml" jetlag:0.1.0
+    $ sudo docker run -de "JETLAG_CONFIG_FILE=jetlag-chatname.yml" jetlag:0.1.1
 
 Don't forget to replace `jetlag-chatname.yml` with your configuration file name.
 
