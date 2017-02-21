@@ -46,7 +46,7 @@ defmodule Jetlag.Handler.Jabber do
   # All messages from XMPP connections are sent to this GenServer PID.
   # So this is a handler to retreive "message" stanzas with "body" attribute.
   def handle_info({:stanza, stanza}, state) do
-    if Map.has_key?(stanza, :body) do
+    if Map.has_key?(stanza, :body) and stanza.body != "" do
       from = stanza.from.resource
       # we don't need to send back our own messages retrieved from Telegram
       if from != state.nickname do
