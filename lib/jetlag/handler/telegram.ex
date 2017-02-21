@@ -5,7 +5,7 @@ defmodule Jetlag.Handler.Telegram do
   @server_name :handler_telegram
 
   def send(from, message) do
-    formatted = :io_lib.format("<~ts> ~ts", [from, message])
+    formatted = "<#{from}> #{message}"
     GenServer.cast(@server_name, {:send, formatted})
   end
 
@@ -62,7 +62,11 @@ defmodule Jetlag.Handler.Telegram do
 
   defp process_updates([update | tail], _offset) do
     new_offset = update.update_id + 1
-    text = update.message.text
+    # quote origin message if it was reply
+    text = case update.message.reply_to_message do
+      nil -> update.message.text
+      _   -> "#{update.message.reply_to_message.text}\n#{update.message.text}"
+    end
     Jetlag.Handler.Jabber.send(text)
     process_updates(tail, new_offset)
   end
