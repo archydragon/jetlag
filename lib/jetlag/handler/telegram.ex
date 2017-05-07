@@ -4,9 +4,13 @@ defmodule Jetlag.Handler.Telegram do
 
   @server_name :handler_telegram
 
+  def send(message) do
+    GenServer.cast(@server_name, {:send, message})
+  end
+
   def send(from, message) do
     formatted = "<#{from}> #{message}"
-    GenServer.cast(@server_name, {:send, formatted})
+    send(formatted)
   end
 
   def start_link do
@@ -67,8 +71,20 @@ defmodule Jetlag.Handler.Telegram do
       nil -> update.message.text
       _   -> "#{update.message.reply_to_message.text}\n#{update.message.text}"
     end
-    Jetlag.Handler.Jabber.send(text)
+    case text do
+      "/me " <> _ -> Jetlag.Handler.Jabber.send(text)
+      "/" <> cmd  -> command(cmd)
+      _           -> Jetlag.Handler.Jabber.send(text)
+    end
     process_updates(tail, new_offset)
+  end
+
+  defp command("help") do
+    send("send halp")
+  end
+
+  defp command(_) do
+    send("unsupported command")
   end
   
 end
